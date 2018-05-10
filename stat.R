@@ -1,7 +1,7 @@
 # Final Project
 # Statistics 135
 # Grace Kim
-# gikim@fas.harvard.edu
+# gikim@post.harvard.edu
 
 # Install and upload the packages
 library(MASS)
@@ -133,53 +133,29 @@ resid(lm(retail$sales~retail$sales1+retail$sales2, data = retail))
 options(na.action=na.exclude)      # excludes (x,y) where x or y is missing
 
 
-
 FIT <- fitted(lm(retail$sales~retail$sales1+retail$sales2, data = retail))
-
 FIT
-
 FIT <- as.matrix(FIT)
-
 FIT
-
 FIT <- ts(FIT)
-
 FIT
 
 # Forecasted Percent Change in Retail Sales
-
 psales <- (FIT[190,]-FIT[189,])/FIT[189,]
-
 psales
 
 # Our forecast was: 0.004159697 = .4%
-
 # On December 13, 2007, the Census Bureau released the advance estimates of U.S. retail and food services sales for November,
-
 # adjusted for seasonal variation and holiday and trading-day differences, but not for price changes, were $385.8 billion,
-
 # an increase of 1.2 percent (±0.7%) from the previous month and 6.3 percent (±0.8%) above November 2006.
 
-
-
 RES <- resid(lm(retail$sales~retail$sales1+retail$sales2, data = retail))
-
-
-
 # Data Analysis for Oil Daily Prices. Testing the "Uncertainty Hypothesis":
-
 # whether economic uncertainty affects today's oil prices
-
 # relative to tomorrow's, using the GARCH(1,1) model.
-
-
-
 oil <- read.delim("F:/Stat 135/R/oildaily.txt", header=T)
-
 names(oil)
-
 summary(oil$spot)
-
 summary(oil$fut1)
 
 summary(oil$fut2)
@@ -541,66 +517,32 @@ aspect = c(3,1), colorkey = TRUE)
 
 
 # The Movies: (infinite number of servers; no delay)
-
 # A new movie opens, but tickets must be bought in advance.
 
-The movie is on limited release and runs for two weeks. People buy tickets
-
-according to a Poisson process at rate 1200 (per day). For each buyer the
-
-separation S between their purchase time and their museum visit is Unif[0,3]
-
-(in days). What is the expected cumulative number of visitors T days after
-
-opening, where T=1,2,3,..., 14.
-
-
+#The movie is on limited release and runs for two weeks. People buy tickets according to a Poisson process at rate 1200 (per day). For each buyer the separation S between their purchase time and their museum visit is Unif[0,3] (in days). What is the expected cumulative number of visitors T days after opening, where T=1,2,3,..., 14.
 
 N <- 14         # number of days in the two opening weeks
-
 A <- 1200       # mean rate of purchases per day
-
 M <- 1000      # number of iterations (weeks)
 
-
-
 museum.week <- function(o)
-
   {
-
     K <- rpois(1,N*A)      # number of buyers in week o
-
     P <- matrix(0,K,2)
-
     P[,1] <- sort(runif(K,0,N))
-
     P[,2] <- runif(K,0,3)  # separation S between purchase and visit
-
     P
-
   }                        # end definition of museum.week
 
 museum.week()
-
 visit.list <- function(o)
-
   {
-
     P <- museum.week()
-
     V <- P[,1]+P[,2]      # P[,1]+P[,2] is of indeterminate length K  
-
     L <- sapply(1:14, function(T) length(V[V<T]))
-
     L
-
   }
 
 visit.list()
-
 X <- t(sapply(1:M, function(o) visit.list()))
-
 apply(X,2,mean)  
-
-
-
